@@ -4,6 +4,9 @@ FROM php:7.4-fpm
 ARG user
 ARG uid
 
+ENV user=sail
+ENV uid=1000
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -24,10 +27,10 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
+RUN useradd -G www-data,root -u ${uid} -d /home/${user} ${user}
+RUN mkdir -p /home/${user}/.composer && \
+    chown -R ${user}:${user} /home/${user}
 
 WORKDIR /app/backend:/var/www
 
-USER $user
+USER ${user}
