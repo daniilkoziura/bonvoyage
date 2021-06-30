@@ -1,0 +1,82 @@
+version: "3.7"
+services:
+  backend:
+    build:
+      args:
+        user: sail
+        uid: 1000
+      context: ./backend
+      dockerfile: Dockerfile
+    image: daniilkoziura/bonvoyage-backend
+    restart: unless-stopped
+    working_dir: /var/www/
+    tty: true
+    environment:
+      - APP_KEY=base64:Ow2KFLFZ/sTgIYZ42+enjnwN/w3HYkGXbrSz9eaLIms=
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_PORT=3306
+      - DB_HOST=mysql
+      - DB_DATABASE
+      - DB_USERNAME
+      - DB_PASSWORD
+    volumes:
+      - ./backend:/var/www
+    depends_on:
+      - db
+    networks:
+      - bonvoyage
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: daniilkoziura/bonvoyage-frontend
+    restart: unless-stopped
+    working_dir: /var/www/
+    tty: true
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/var/www
+      - ./frontend/node_modules:/app/frontend/node_modules
+    depends_on:
+      - backend
+    networks:
+      - bonvoyage
+
+  db:
+    image: mysql:5.7
+    container_name: bonvoyage-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: 'bonvoyage'
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_USER: 'sail'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+    networks:
+      - bonvoyage
+
+  nginx:
+    image: nginx:alpine
+    container_name: bonvoyage-nginx
+    restart: unless-stopped
+    ports:
+      - 80:80
+    tty: true
+    volumes:
+      - ./backend:/var/www
+      - ./nginx:/etc/nginx/conf.d/
+    networks:
+      - bonvoyage
+
+networks:
+  bonvoyage:
+    driver: bridge

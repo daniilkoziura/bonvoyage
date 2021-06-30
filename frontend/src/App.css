@@ -1,0 +1,23 @@
+.head-container {
+    /*background-color: aliceblue;*/
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    font: 1.2em "Fira Sans", sans-serif;
+}
+
+.header-base-company {
+    display: flex;
+    cursor: pointer;
+}
+
+.header-auth-link{
+    padding: 40px 20px 20px 20px;
+    cursor: pointer;
+    font: 0.8em "Fira Sans", sans-serif;
+}
+
+
+
+/* Flight Dashboard */
+
