@@ -8,8 +8,8 @@ WORKDIR /app/frontend
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install app dependencies
-COPY ./frontend/package.json ./
-COPY ./frontend/package-lock.json ./
+COPY ./package.json ./
+COPY ./package-lock.json ./
 
 EXPOSE 3000
 

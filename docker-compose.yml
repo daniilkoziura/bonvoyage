@@ -7,7 +7,7 @@ services:
         uid: 1000
       context: ./backend
       dockerfile: Dockerfile
-    image: daniilkoziura/bonvoyage-backend
+    image: daniilkoziura/bonvoyage-backend-kubernetes
     restart: unless-stopped
     working_dir: /var/www/
     tty: true
@@ -31,7 +31,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: daniilkoziura/bonvoyage-frontend
+    image: daniilkoziura/bonvoyage-frontend-kubernetes
     restart: unless-stopped
     working_dir: /var/www/
     tty: true
