@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bon-front-deployment
+  labels:
+    app: bonvoyage-frontend
+    env: prod
+    owner: daniilkoziura
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bonvoyage-frontend
+  template:
+    metadata:
+      labels:
+        app: bonvoyage-frontend
+    spec:
+      containers:
+      - name: bonvoyage-frontend
+        image: daniilkoziura/bonvoyage-frontend-kubernetes:latest
+        ports:
+          - containerPort: 3000

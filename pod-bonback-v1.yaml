@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bonvoyage-back
+  labels:
+    env  : prod
+    app  : main
+    tier : backend
+    owner: DaniilKoziura
+spec:
+  containers:
+    - name: container-laravel
+      image: daniilkoziura/bonvoyage-backend-kubernetes:latest
+      ports:
+        - containerPort: 3000
