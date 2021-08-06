@@ -1,4 +1,5 @@
 import React from 'react';
+import {bonvoyageApi} from "../Links"
 import {
     Table,
     TableBody,
@@ -59,7 +60,7 @@ export default function FlightDashboard(){
     const [rows, setRows] = React.useState([]);
 
     React.useEffect(() => {
-        fetch("http://localhost/api/flights")
+        fetch(`${bonvoyageApi}/api/flights`)
             .then(res => res.json())
             .then(
                 (result) => {

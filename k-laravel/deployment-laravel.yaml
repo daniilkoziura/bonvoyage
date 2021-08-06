@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel
+  labels:
+    app: laravel-app
+    owner: daniilkoziura
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: laravel-app
+  template:
+    metadata:
+      labels:
+        app: laravel-app
+    spec:
+      volumes:
+        - name: laravel-storage
+          emptyDir: {}
+        - name: nginx-config-volume
+          configMap:
+            name: nginx-config-laravel
+      containers:
+        - image: daniilkoziura/bonvoyage-backend-kubernetes:version8
+          name: app
+          env:
+            - name: LARAVEL_DB_HOST
+              value: mysql-service
+            - name: LARAVEL_DB_PASSWORD
+              value: "password"
+            - name: LARAVEL_DB_USERNAME
+              value: "sail"
+            - name: LARAVEL_DB_PORT
+              value: "3306"
+            - name: LARAVEL_DB_DATABASE
+              value: "bonvoyage"
+            - name: LARAVEL_DB_CONNECTION
+              value: "mysql"
+          volumeMounts:
+            - name: laravel-storage
+              mountPath: /var/www/storage
+          lifecycle:
+            postStart:
+              exec:
+                command: [ "/bin/sh", "-c", "mkdir -p /var/www/storage/framework/cache;
+                 mkdir -p /var/www/storage/framework/sessions; mkdir -p /var/www/storage/framework/testing
+                 mkdir -p /var/www/storage/framework/views;"]
+        - image: nginx:stable
+          name: nginx
+          volumeMounts:
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP

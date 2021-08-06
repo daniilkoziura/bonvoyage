@@ -18,5 +18,6 @@ RUN npm install --silent
 # add app
 COPY ./ ./
 
-# start app
-CMD ["npm", "start"]
+RUN npm run build
+
+CMD ["npm", "run", "start:prod"]

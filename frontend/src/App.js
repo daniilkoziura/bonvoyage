@@ -12,7 +12,7 @@ function App() {
             <div className="header-base-company">
                 <img src={`${process.env.PUBLIC_URL}/Transport_Plane_1 copy 14.svg`}  alt="bonvoyage-logo" width="120" height="120"/>
                 <div>
-                    <h1 className="test">Bonvoyage with docker tag version1</h1>
+                    <h1 className="test">Bonvoyage with kuber</h1>
                     <h5>{`Let\`s book your flight today!`.toUpperCase()}</h5>
                 </div>
             </div>
